@@ -6,8 +6,8 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
 require 'url_validation'
 require 'active_model'
-require 'active_support/core_ext/kernel/singleton_class'
+require 'active_support/core_ext'
 
 RSpec.configure do |c|
-  
+
 end
