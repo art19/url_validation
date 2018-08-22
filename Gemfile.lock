@@ -2,22 +2,21 @@ GEM
   remote: https://rubygems.org/
   specs:
     RedCloth (4.2.9)
-    activemodel (4.1.7)
-      activesupport (= 4.1.7)
-      builder (~> 3.1)
-    activerecord (4.1.7)
-      activemodel (= 4.1.7)
-      activesupport (= 4.1.7)
-      arel (~> 5.0.0)
-    activesupport (4.1.7)
-      i18n (~> 0.6, >= 0.6.9)
-      json (~> 1.7, >= 1.7.7)
+    activemodel (5.1.6)
+      activesupport (= 5.1.6)
+    activerecord (5.1.6)
+      activemodel (= 5.1.6)
+      activesupport (= 5.1.6)
+      arel (~> 8.0)
+    activesupport (5.1.6)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
       minitest (~> 5.1)
-      thread_safe (~> 0.1)
       tzinfo (~> 1.1)
     addressable (2.3.6)
-    arel (5.0.1.20140414130214)
+    arel (8.0.0)
     builder (3.2.2)
+    concurrent-ruby (1.0.5)
     descendants_tracker (0.0.4)
       thread_safe (~> 0.3, >= 0.3.1)
     diff-lcs (1.2.5)
@@ -36,7 +35,8 @@ GEM
     highline (1.6.21)
     httpi (2.2.7)
       rack
-    i18n (0.6.11)
+    i18n (1.1.0)
+      concurrent-ruby (~> 1.0)
     jeweler (2.0.1)
       builder
       bundler (>= 1.0)
@@ -46,10 +46,10 @@ GEM
       nokogiri (>= 1.5.10)
       rake
       rdoc
-    json (1.8.1)
+    json (1.8.6)
     jwt (1.0.0)
     mini_portile (0.6.1)
-    minitest (5.4.2)
+    minitest (5.11.3)
     multi_json (1.10.1)
     multi_xml (0.5.5)
     multipart-post (2.0.0)
@@ -77,8 +77,8 @@ GEM
     rspec-mocks (3.1.3)
       rspec-support (~> 3.1.0)
     rspec-support (3.1.2)
-    thread_safe (0.3.4)
-    tzinfo (1.2.2)
+    thread_safe (0.3.6)
+    tzinfo (1.2.5)
       thread_safe (~> 0.1)
     yard (0.8.7.6)
 
@@ -94,3 +94,6 @@ DEPENDENCIES
   jeweler
   rspec
   yard
+
+BUNDLED WITH
+   1.16.4
