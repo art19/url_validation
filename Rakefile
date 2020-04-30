@@ -18,6 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/riscfuture/url_validation"
   gem.authors = [ "Tim Morgan" ]
   gem.required_ruby_version = '>= 1.8.7'
+  gem.version = '1.1.1'
 end
 Jeweler::RubygemsDotOrgTasks.new
 

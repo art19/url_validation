@@ -1,0 +1,10 @@
+language: ruby
+dist: bionic
+rvm:
+- 2.7.1
+cache:
+  bundler: true
+notifications:
+  slack:
+    rooms:
+      secure: W4lz3wUAnQDIsaISe6SeJr6nF7NVIgJgK2nIkakvH2Q87H1blw2NtHN9hKOjA5VvvKZ/iGz7wyXDpM37L3g7hTRnNGfh95BJXzF2WgPR4eEZWdoBWyi0pbwR9hCeglAx7WbjMGVERr5sAx5GAUMLS6ou/482pFk/QgFyGYvDOb2Vc+O9FqZg/XdIi8YAF2gNWjBmRpA3trOURWOz5oRfEpkjfzyOX9d4m5gtfefkr9iu2IqnIkzcQ3cIRTRoWLggXef1bz5PIKhjV2muxBIfST9zDZshfR0hAG+yxCeuLCOzERqF+cuvJmDMvuqm9eL916M4mrast+tG7riHdnMjCzYfYUrXZkyZijDIqx6MZgaOnulzhmiJlbwG1ttLCVN//UWC1uv8YbxN9vgPBYEX1DR5PwdC56wZUoTl7Xyz/ingvQ6JD5N/fQwCbAdxXGtpxk6XOyY/Kugq2ZKFxFWcJPfvb/5IAci8mn2lEzZs7CGIeW+/O4SRna1K42AUsQoYXWusk9J5x+8Dowsn6wqjKyz+8cjZz48aG44CqiNjHV4rbtTr2NmL5aG0q/8gx3XWUd1IgGr3fIg/p8klJIXK0gue7y2VwuQUAUP7K7K+0nZhxpOkTB80FFrrbP4j9U2UurS9xHOuWWVtvmxsmBCN3z+vDCDKpw/5o77Q7Scgziw=
