@@ -23,6 +23,7 @@ Gem::Specification.new do |s|
     ".rspec",
     ".ruby-gemset",
     ".ruby-version",
+    ".travis.yml",
     "Gemfile",
     "Gemfile.lock",
     "LICENSE",
@@ -30,6 +31,7 @@ Gem::Specification.new do |s|
     "Rakefile",
     "VERSION",
     "lib/url_validation.rb",
+    "lib/url_validation/version.rb",
     "spec/spec_helper.rb",
     "spec/url_validator_spec.rb",
     "url_validation.gemspec"
