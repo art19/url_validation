@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'bundler'
 Bundler.require :default, :development
 
@@ -9,5 +11,4 @@ require 'active_model'
 require 'active_support/core_ext'
 
 RSpec.configure do |c|
-
 end

@@ -29,9 +29,7 @@ desc 'Build the package and publish it to rubygems.pkg.github.com'
 task publish: :build do
   require 'url_validation'
 
-  unless ENV['GEM_PUSH_KEY']
-    raise 'Set environment variable GEM_PUSH_KEY to the name of a key in ~/.gem/credentials'
-  end
+  raise 'Set environment variable GEM_PUSH_KEY to the name of a key in ~/.gem/credentials' unless ENV['GEM_PUSH_KEY']
 
   system("gem push --key #{ENV['GEM_PUSH_KEY']} --host https://rubygems.pkg.github.com/art19 " \
          "pkg/url_validation-#{UrlValidator::VERSION}.gem")

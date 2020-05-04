@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'addressable/uri'
 require 'httpi'
 require 'active_support/core_ext/hash/except'
@@ -64,59 +66,58 @@ require 'active_support/core_ext/array/wrap'
 class UrlValidator < ActiveModel::EachValidator
   # @private
   CODES = {
-    :continue => 100,
-    :switching_protocols => 101,
-    :processing => 102,
-    :ok => 200,
-    :created => 201,
-    :accepted => 202,
-    :non_authoritative_information => 203,
-    :no_content => 204,
-    :reset_content => 205,
-    :partial_content => 206,
-    :multi_status => 207,
-    :im_used => 226,
-    :multiple_choices => 300,
-    :moved_permanently => 301,
-    :found => 302,
-    :see_other => 303,
-    :not_modified => 304,
-    :use_proxy => 305,
-    :reserved => 306,
-    :temporary_redirect => 307,
-    :bad_request => 400,
-    :unauthorized => 401,
-    :payment_required => 402,
-    :forbidden => 403,
-    :not_found => 404,
-    :method_not_allowed => 405,
-    :not_acceptable => 406,
-    :proxy_authentication_required => 407,
-    :request_timeout => 408,
-    :conflict => 409,
-    :gone => 410,
-    :length_required => 411,
-    :precondition_failed => 412,
-    :request_entity_too_large => 413,
-    :request_uri_too_long => 414,
-    :unsupported_media_type => 415,
-    :requested_range_not_satisfiable => 416,
-    :expectation_failed => 417,
-    :unprocessable_entity => 422,
-    :locked => 423,
-    :failed_dependency => 424,
-    :upgrade_required => 426,
-    :internal_server_error => 500,
-    :not_implemented => 501,
-    :bad_gateway => 502,
-    :service_unavailable => 503,
-    :gateway_timeout => 504,
-    :http_version_not_supported => 505,
-    :variant_also_negotiates => 506,
-    :insufficient_storage => 507,
-    :not_extended => 510
-  }
-
+    continue:                        100,
+    switching_protocols:             101,
+    processing:                      102,
+    ok:                              200,
+    created:                         201,
+    accepted:                        202,
+    non_authoritative_information:   203,
+    no_content:                      204,
+    reset_content:                   205,
+    partial_content:                 206,
+    multi_status:                    207,
+    im_used:                         226,
+    multiple_choices:                300,
+    moved_permanently:               301,
+    found:                           302,
+    see_other:                       303,
+    not_modified:                    304,
+    use_proxy:                       305,
+    reserved:                        306,
+    temporary_redirect:              307,
+    bad_request:                     400,
+    unauthorized:                    401,
+    payment_required:                402,
+    forbidden:                       403,
+    not_found:                       404,
+    method_not_allowed:              405,
+    not_acceptable:                  406,
+    proxy_authentication_required:   407,
+    request_timeout:                 408,
+    conflict:                        409,
+    gone:                            410,
+    length_required:                 411,
+    precondition_failed:             412,
+    request_entity_too_large:        413,
+    request_uri_too_long:            414,
+    unsupported_media_type:          415,
+    requested_range_not_satisfiable: 416,
+    expectation_failed:              417,
+    unprocessable_entity:            422,
+    locked:                          423,
+    failed_dependency:               424,
+    upgrade_required:                426,
+    internal_server_error:           500,
+    not_implemented:                 501,
+    bad_gateway:                     502,
+    service_unavailable:             503,
+    gateway_timeout:                 504,
+    http_version_not_supported:      505,
+    variant_also_negotiates:         506,
+    insufficient_storage:            507,
+    not_extended:                    510
+  }.freeze
 
   # @private
   def validate_each(record, attribute, value)
@@ -124,11 +125,9 @@ class UrlValidator < ActiveModel::EachValidator
 
     begin
       uri = Addressable::URI.parse(value)
-      if uri.scheme.nil? and options[:default_scheme] then
-        uri = Addressable::URI.parse("#{options[:default_scheme]}://#{value}")
-      end
+      uri = Addressable::URI.parse("#{options[:default_scheme]}://#{value}") if uri.scheme.nil? && options[:default_scheme]
     rescue Addressable::URI::InvalidURIError
-      record.errors.add(attribute, options[:invalid_url_message]        || :invalid_url)          unless url_format_valid?(uri, options)
+      record.errors.add(attribute, options[:invalid_url_message] || :invalid_url) unless url_format_valid?(uri, options)
       return
     end
 
@@ -140,58 +139,59 @@ class UrlValidator < ActiveModel::EachValidator
   private
 
   def url_format_valid?(uri, options)
-    return false unless Array.wrap(options[:scheme] || %w( http https )).include?(uri.try(:scheme))
+    return false unless Array.wrap(options[:scheme] || %w[http https]).include?(uri.try(:scheme))
 
     case uri.scheme
-      when 'http', 'https'
-        return http_url_format_valid?(uri)
-      else
-        return true
+    when 'http', 'https'
+      http_url_format_valid?(uri)
+    else
+      true
     end
   end
 
   def http_url_format_valid?(uri)
-    uri.host.present? and not uri.path.nil? and not uri.host.match(/\s/)
+    uri.host.present? && !uri.path.nil? && !uri.host.match(/\s/)
   end
 
   def url_accessible?(uri, options)
-    return true unless options[:check_host] or options[:check_path]
+    return true unless options[:check_host] || options[:check_path]
 
     check_host = options[:check_host]
-    check_host ||= %w( http https ) if options[:check_path]
-    if (schemes = Array.wrap(check_host)) and schemes.all? { |scheme| scheme.kind_of?(String) } then
+    check_host ||= %w[http https] if options[:check_path]
+    if (schemes = Array.wrap(check_host)) && schemes.all? { |scheme| scheme.is_a?(String) }
       return true unless schemes.include?(uri.scheme)
     end
 
     case uri.scheme
-      when 'http', 'https'
-        return http_url_accessible?(uri, options)
-      else
-        return true
+    when 'http', 'https'
+      http_url_accessible?(uri, options)
+    else
+      true
     end
   end
 
   def http_url_accessible?(uri, options)
     request = HTTPI::Request.new(uri.to_s)
     options[:request_callback].call(request) if options[:request_callback].respond_to?(:call)
-    return HTTPI.get(request, options[:httpi_adapter])
-  rescue
-    return false
+    HTTPI.get(request, options[:httpi_adapter])
+  rescue StandardError
+    false
   end
 
   def url_response_valid?(response, options)
-    return true unless response.kind_of?(HTTPI::Response) and options[:check_path]
+    return true unless response.is_a?(HTTPI::Response) && options[:check_path]
+
     response_codes = options[:check_path] == true ? [400..499, 500..599] : Array.wrap(options[:check_path]).flatten
-    return response_codes.none? do |code| # it's good if it's not a bad response
+    response_codes.none? do |code| # it's good if it's not a bad response
       case code # and it's a bad response if...
-        when Range
-          code.include? response.code
-        when Fixnum
-          code == response.code
-        when Symbol
-          CODES.include?(code) && CODES[code] == response.code
-        else # be generous and treat it as a non-match if we don't know what it is
-          false
+      when Range
+        code.include? response.code
+      when Integer
+        code == response.code
+      when Symbol
+        CODES.include?(code) && CODES[code] == response.code
+      else # be generous and treat it as a non-match if we don't know what it is
+        false
       end
     end
   end
