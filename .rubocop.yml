@@ -1,0 +1,47 @@
+require: rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 2.6
+
+Layout/EndOfLine:
+  EnforcedStyle: lf
+
+Lint/AmbiguousBlockAssociation:
+  Enabled: false # This is broken in Rubocop 0.48
+
+Metrics/BlockLength:
+  Exclude:
+    - "*.gemspec"
+    - "spec/**/*.rb"
+
+Layout/LineLength:
+  Max: 160 # 80*2 - you have a widescreen monitor, right?
+
+# It's asinine that a single Hash parameter is OK but kwargs aren't, when kwargs are an order
+# of magnitude faster, easier to statically analyze and document, and arguably easier to grok.
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+RSpec/NestedGroups:
+  Max: 4
+
+# Re-enable this when the following is resolved:
+# https://github.com/rubocop-hq/rubocop/issues/5953
+# module_function is a false positive as are attr_accessor
+# and friends. WTF, rubocop people?
+Style/AccessModifierDeclarations:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: ()
+    "%i": "[]"
+    "%I": "[]"
+    "%r": "{}"
+    "%w": "[]"
+    "%W": "[]"
+
+Layout/HashAlignment:
+  Enabled: true
+  EnforcedColonStyle: table
+  EnforcedHashRocketStyle: table
