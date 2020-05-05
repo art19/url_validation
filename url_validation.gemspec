@@ -4,36 +4,35 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'url_validation/version'
 
 Gem::Specification.new do |s|
-  s.name = 'art19-url_validation'
-  s.version = UrlValidation::VERSION
-
+  s.name                      = 'art19-url_validation'
+  s.version                   = UrlValidation::VERSION
+  s.metadata                  = { 'github_repo' => 'ssh://github.com/art19/url_validation' }
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
-  s.require_paths = ['lib']
-  s.authors = ['Tim Morgan']
-  s.date = '2020-04-30'
-  s.description = 'A simple, localizable EachValidator for URL fields in ActiveRecord 3.0.'
-  s.email = 'git@timothymorgan.info'
-  s.extra_rdoc_files = [
-    'LICENSE',
-    'README.textile'
-  ]
-  s.files = [
-    '.document',
-    '.rspec',
-    '.ruby-gemset',
-    '.ruby-version',
-    '.travis.yml',
-    'Gemfile',
-    'Gemfile.lock',
-    'LICENSE',
-    'README.textile',
-    'Rakefile',
-    'VERSION',
-    'lib/url_validation.rb',
-    'lib/url_validation/version.rb',
-    'spec/spec_helper.rb',
-    'spec/url_validator_spec.rb',
-    'url_validation.gemspec'
+  s.require_paths             = ['lib']
+  s.authors                   = ['Tim Morgan']
+  s.date                      = '2020-04-30'
+  s.description               = 'A simple, localizable EachValidator for URL fields in ActiveRecord 3.0.'
+  s.email                     = 'git@timothymorgan.info'
+
+  s.extra_rdoc_files = %w[LICENSE README.textile]
+
+  s.files = %w[
+    .document
+    .rspec
+    .ruby-gemset
+    .ruby-version
+    .travis.yml
+    Gemfile
+    Gemfile.lock
+    LICENSE
+    README.textile
+    Rakefile
+    VERSION
+    lib/url_validation.rb
+    lib/url_validation/version.rb
+    spec/spec_helper.rb
+    spec/url_validator_spec.rb
+    url_validation.gemspec
   ]
   s.homepage = 'http://github.com/riscfuture/url_validation'
   s.required_ruby_version = Gem::Requirement.new('>= 2.7.1')
