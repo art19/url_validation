@@ -4,7 +4,7 @@ $LOAD_PATH.push File.expand_path('lib', __dir__)
 require 'url_validation/version'
 
 Gem::Specification.new do |s|
-  s.name = 'url_validation'
+  s.name = 'art19-url_validation'
   s.version = UrlValidation::VERSION
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=

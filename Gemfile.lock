@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    url_validation (1.1.1)
+    art19-url_validation (1.1.1)
       activerecord (~> 6.0.2.2)
       activesupport (~> 6.0.2.2)
       addressable (~> 2.4.0)
@@ -123,10 +123,10 @@ PLATFORMS
 
 DEPENDENCIES
   RedCloth (~> 4.3.2)
+  art19-url_validation!
   rspec (~> 3.9.0)
   rubocop (~> 0.82.0)
   rubocop-rspec (~> 1.39.0)
-  url_validation!
   yard (~> 0.9.25)
 
 BUNDLED WITH
