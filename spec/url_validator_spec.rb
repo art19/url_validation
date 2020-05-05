@@ -11,7 +11,7 @@ end
 describe UrlValidator do
   let(:record) { Record.new }
 
-  context '[basic]' do
+  context 'without :scheme' do
     context 'when :allow_nil is set' do
       let(:validator) { described_class.new(attributes: [:field], allow_nil: true) }
 
@@ -53,7 +53,7 @@ describe UrlValidator do
     end
   end
 
-  context '[format]' do
+  context 'with :scheme' do
     context 'when :scheme is set to http' do
       let(:validator) { described_class.new(attributes: [:field], scheme: 'http') }
 
@@ -101,34 +101,35 @@ describe UrlValidator do
         expect(record.errors).to be_empty
       end
     end
+  end
 
-    context '[HTTP(S)]' do
-      it 'does not allow garbage URLs that still somehow pass the ridiculously open-ended RFC' do
-        validator = described_class.new(attributes: [:field])
+  context 'with garbage URLs that still somehow pass the ridiculously open-ended RFC' do
+    let(:validator) { described_class.new(attributes: [:field]) }
 
-        [
-          'http:sdg.sdfg/',
-          'http/sdg.d',
-          'http:://dsfg.dsfg/',
-          'http//sdg..g',
-          'http://://sdfg.f',
-          'http://dsaf.com://sdg.com'
-        ].each do |_uri|
-          record.errors.clear
-          validator.validate_each(record, :field, 'www.apple.com')
-          expect(record.errors[:field].first).to include('invalid_url')
-        end
+    before do
+      record.errors.clear
+    end
+
+    %w(http:sdg.sdfg/ http/sdg.d http:://dsfg.dsfg/ http//sdg..g http://://sdfg.f).each do |junk_uri|
+      context "with #{junk_uri}" do
+        before { validator.validate_each(record, :field, junk_uri) }
+
+        it { expect(record.errors[:field].first).to include('invalid_url') }
       end
     end
   end
 
-  context '[accessibility]' do
-    context '[:check_host]' do
-      it 'onlies validate if the host is accessible when :check_host is set' do
-        validator = described_class.new(attributes: [:field])
-        validator.validate_each(record, :field, 'http://www.invalid.tld')
-        expect(record.errors).to be_empty
+  context 'when checking for accessibility' do
+    context 'without :check_host' do
+      let(:validator) { described_class.new(attributes: [:field]) }
 
+      before { validator.validate_each(record, :field, 'http://www.invalid.tld') }
+
+      it { expect(record.errors).to be_empty }
+    end
+
+    context 'with :check_host' do
+      it 'onlies validate if the host is accessible when :check_host is set' do
         validator = described_class.new(attributes: [:field], check_host: true)
         validator.validate_each(record, :field, 'http://www.invalid.tld')
         expect(record.errors[:field].first).to include('url_not_accessible')
