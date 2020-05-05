@@ -110,7 +110,7 @@ describe UrlValidator do
       record.errors.clear
     end
 
-    %w(http:sdg.sdfg/ http/sdg.d http:://dsfg.dsfg/ http//sdg..g http://://sdfg.f).each do |junk_uri|
+    %w[http:sdg.sdfg/ http/sdg.d http:://dsfg.dsfg/ http//sdg..g http://://sdfg.f].each do |junk_uri|
       context "with #{junk_uri}" do
         before { validator.validate_each(record, :field, junk_uri) }
 
@@ -128,151 +128,179 @@ describe UrlValidator do
       it { expect(record.errors).to be_empty }
     end
 
-    context 'with :check_host' do
-      it 'onlies validate if the host is accessible when :check_host is set' do
-        validator = described_class.new(attributes: [:field], check_host: true)
-        validator.validate_each(record, :field, 'http://www.invalid.tld')
-        expect(record.errors[:field].first).to include('url_not_accessible')
+    context 'when :check_host set to true' do
+      let(:validator) { described_class.new(attributes: [:field], check_host: true) }
+
+      before { validator.validate_each(record, :field, 'http://www.invalid.tld') }
+
+      it { expect(record.errors[:field].first).to include('url_not_accessible') }
+    end
+
+    context 'when :check_host set to http' do
+      let(:validator) { described_class.new(attributes: [:field], check_host: 'http') }
+
+      context 'when URL scheme is not http' do
+        before { validator.validate_each(record, :field, 'https://www.invalid.tld') }
+
+        it { expect(record.errors).to be_empty }
       end
 
-      it "does not perform the accessibility check if :check_host is set to 'http' and the URL scheme is not HTTP" do
-        validator = described_class.new(attributes: [:field], check_host: 'http')
-        validator.validate_each(record, :field, 'https://www.invalid.tld')
-        expect(record.errors).to be_empty
-      end
+      context 'when URL scheme is http' do
+        before { validator.validate_each(record, :field, 'http://www.invalid.tld') }
 
-      it "onlies validate if the host is accessible when :check_host is set to 'http' and the URL scheme is HTTP" do
-        validator = described_class.new(attributes: [:field], check_host: 'http')
-        validator.validate_each(record, :field, 'http://www.invalid.tld')
-        expect(record.errors[:field].first).to include('url_not_accessible')
-      end
-
-      it 'does not perform the accessibility check if :check_host is set to %w( http https ) and the URL scheme is not HTTP(S)' do
-        validator = described_class.new(attributes: [:field], check_host: %w[http https], scheme: %w[ftp http https])
-        validator.validate_each(record, :field, 'ftp://www.invalid.tld')
-        expect(record.errors).to be_empty
-      end
-
-      it 'onlies validate if the host is accessible when :check_host is set to %w( http https ) and the URL scheme is HTTP(S)' do
-        validator = described_class.new(attributes: [:field], check_host: %w[http https])
-        validator.validate_each(record, :field, 'http://www.invalid.tld')
-        expect(record.errors[:field].first).to include('url_not_accessible')
-
-        validator = described_class.new(attributes: [:field], check_host: %w[http https])
-        validator.validate_each(record, :field, 'https://www.invalid.tld')
-        expect(record.errors[:field].first).to include('url_not_accessible')
-      end
-
-      it 'onlies validate the host' do
-        validator = described_class.new(attributes: [:field], check_host: true)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors).to be_empty
+        it { expect(record.errors[:field].first).to include('url_not_accessible') }
       end
     end
 
-    context '[:check_path]' do
-      it 'does not validate if the response code is equal to the Fixnum value of this option' do
-        validator = described_class.new(attributes: [:field], check_path: 404)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
+    context 'when :check_host is set to %w(http https)' do
+      let(:validator) { described_class.new(attributes: [:field], check_host: %w[http https], scheme: %w[ftp http https]) }
 
-        record.errors.clear
+      context 'when URL scheme is not http(s)' do
+        before { validator.validate_each(record, :field, 'ftp://www.invalid.tld') }
 
-        validator = described_class.new(attributes: [:field], check_path: 405)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
+        it { expect(record.errors).to be_empty }
       end
 
-      it 'does not validate if the response code is equal to the Symbol value of this option' do
-        validator = described_class.new(attributes: [:field], check_path: :not_found)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
+      context 'when URL scheme is http' do
+        before { validator.validate_each(record, :field, 'http://www.invalid.tld') }
 
-        record.errors.clear
-
-        validator = described_class.new(attributes: [:field], check_path: :unauthorized)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
+        it { expect(record.errors[:field].first).to include('url_not_accessible') }
       end
 
-      it 'does not validate if the response code is within the Range value of this option' do
-        validator = described_class.new(attributes: [:field], check_path: 400..499)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
+      context 'when URL scheme is https' do
+        before { validator.validate_each(record, :field, 'https://www.invalid.tld') }
 
-        record.errors.clear
-
-        validator = described_class.new(attributes: [:field], check_path: 500..599)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
-      end
-
-      it 'does not validate if the response code is equal to the Fixnum value contained in the Array value of this option' do
-        validator = described_class.new(attributes: [:field], check_path: [404, 405])
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
-
-        record.errors.clear
-
-        validator = described_class.new(attributes: [:field], check_path: [405, 406])
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
-      end
-
-      it 'does not validate if the response code is equal to the Symbol value contained in the Array value of this option' do
-        validator = described_class.new(attributes: [:field], check_path: %i[not_found unauthorized])
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
-
-        record.errors.clear
-
-        validator = described_class.new(attributes: [:field], check_path: %i[unauthorized moved_permanently])
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
-      end
-
-      it 'does not validate if the response code is equal to the Range value contained in the Array value of this option' do
-        validator = described_class.new(attributes: [:field], check_path: [400..499, 500..599])
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
-
-        record.errors.clear
-
-        validator = described_class.new(attributes: [:field], check_path: [500..599, 300..399])
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
-      end
-
-      it 'skips validation by default' do
-        validator = described_class.new(attributes: [:field], check_path: nil)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field]).to be_empty
-      end
-
-      it 'does not validate 4xx and 5xx response codes if the value is true' do
-        validator = described_class.new(attributes: [:field], check_path: true)
-        validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
-        expect(record.errors[:field].first).to include('url_invalid_response')
-      end
-
-      it 'skips validation for non-HTTP URLs' do
-        validator = described_class.new(attributes: [:field], check_path: true, scheme: %w[ftp http https])
-        validator.validate_each(record, :field, 'ftp://ftp.sdgasdgohaodgh.com/sdgjsdg')
-        expect(record.errors[:field]).to be_empty
+        it { expect(record.errors[:field].first).to include('url_not_accessible') }
       end
     end
 
-    context '[:httpi_adapter]' do
+    context 'when :check_host is set to true' do
+      let(:validator) { described_class.new(attributes: [:field], check_host: true) }
+
+      before { validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf') }
+
+      it { expect(record.errors).to be_empty }
+    end
+
+    context 'when using :check_path' do
+      before { validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf') }
+
+      context 'with check_path: 404' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: 404) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+
+      context 'with check_path: 405' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: 405) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'with check_path: :not_found' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: :not_found) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+
+      context 'with check_path: :unauthorized' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: :unauthorized) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'with check_path: 400..499' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: 400..499) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+
+      context 'with check_path: 500..599' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: 500..599) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'with check_path: [404,405]' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: [404, 405]) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+
+      context 'with check_path: [405, 406]' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: [405, 406]) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'with check_path: %i[not_found unauthorized]' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: %i[not_found unauthorized]) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+
+      context 'with check_path: %[unauthorized moved_permanently]' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: %i[unauthorized moved_permanently]) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'when check_path is an array of ranges and response code in range' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: [400..499, 500..599]) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+
+      context 'when check_path is an array of ranges and response code NOT in range' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: [500..599, 300..399]) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'when check_path is nil' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: nil) }
+
+        it { expect(record.errors[:field]).to be_empty }
+      end
+
+      context 'when check_path is true' do
+        let(:validator) { described_class.new(attributes: [:field], check_path: true) }
+
+        it { expect(record.errors[:field].first).to include('url_invalid_response') }
+      end
+    end
+
+    context 'with non-HTTP URLs' do
+      let(:validator) { described_class.new(attributes: [:field], check_path: true, scheme: %w[ftp http https]) }
+
+      before { validator.validate_each(record, :field, 'ftp://ftp.sdgasdgohaodgh.com/sdgjsdg') }
+
+      it { expect(record.errors[:field]).to be_empty }
+    end
+
+    context 'when using httpi_adapter' do
+      let(:validator) { described_class.new(attributes: [:field], httpi_adapter: :curl, check_host: true) }
+
       it 'uses the specified HTTPI adapter' do
-        validator = described_class.new(attributes: [:field], httpi_adapter: :curl, check_host: true)
-        expect(HTTPI).to receive(:get).once.with(an_instance_of(HTTPI::Request), :curl).and_return(false)
+        allow(HTTPI).to receive(:get).with(an_instance_of(HTTPI::Request), :curl).and_return(false)
         validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf')
+
+        expect(HTTPI).to have_received(:get).once
       end
     end
 
-    context '[:request_callback]' do
+    context 'with :request_callback' do
       called = false
-      let(:validator) { described_class.new(attributes: [:field], check_host: true, request_callback: ->(request) { called = true; expect(request).to be_kind_of(HTTPI::Request) }) }
+      let(:validator) do
+        described_class.new(
+          attributes:       [:field],
+          check_host:       true,
+          request_callback: lambda do |request|
+            called = true
+            expect(request).to be_kind_of(HTTPI::Request)
+          end
+        )
+      end
 
       before { validator.validate_each(record, :field, 'http://www.google.com/sdgsdgf') }
 
