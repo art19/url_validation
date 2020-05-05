@@ -6,6 +6,9 @@ h1. url_validation -- Simple URL validator for Rails 3
 
 h2. About
 
+Note: This is Art19's fork of the url_validation gem.  Our fork contains the fix for validating
+URL's that have spaces and tabs in them.
+
 This gem adds a very simple URL format validator to be used with ActiveRecord
 models in Rails 3.0. It supports localized error messages. It can validate many
 different kinds of URLs, including HTTP and HTTPS. It supports advanced

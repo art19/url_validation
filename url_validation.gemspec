@@ -36,7 +36,7 @@ Gem::Specification.new do |s|
     'url_validation.gemspec'
   ]
   s.homepage = 'http://github.com/riscfuture/url_validation'
-  s.required_ruby_version = Gem::Requirement.new('>= 1.8.7')
+  s.required_ruby_version = Gem::Requirement.new('>= 2.7.1')
   s.rubygems_version = '3.1.2'
   s.summary = 'Simple URL validation in Rails 3'
 
