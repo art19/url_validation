@@ -18,7 +18,6 @@ YARD::Rake::YardocTask.new('doc') do |doc|
   doc.files = ['lib/*_validator.rb', 'README.textile']
 end
 
-
 desc 'Build the package and publish it to rubygems.pkg.github.com'
 task publish: :build do
   require 'url_validation'

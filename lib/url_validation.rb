@@ -63,6 +63,7 @@ require 'active_support/core_ext/array/wrap'
 #
 # | @:request_callback@ | A proc that receives the request object (for ==HTTP(S)== requests, the @HTTPI::Request@ object) before it is executed. You can use this proc to set, e.g., custom headers or timeouts on the request. |
 
+# Class that validates URLs
 class UrlValidator < ActiveModel::EachValidator
   # @private
   CODES = {
@@ -132,7 +133,7 @@ class UrlValidator < ActiveModel::EachValidator
     end
 
     record.errors.add(attribute, options[:invalid_url_message]          || :invalid_url)          unless url_format_valid?(uri, options)
-    record.errors.add(attribute, options[:url_not_accessible_message]   || :url_not_accessible)   unless response = url_accessible?(uri, options)
+    record.errors.add(attribute, options[:url_not_accessible_message]   || :url_not_accessible)   unless (response = url_accessible?(uri, options))
     record.errors.add(attribute, options[:url_invalid_response_message] || :url_invalid_response) unless url_response_valid?(response, options)
   end
 
