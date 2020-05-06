@@ -44,10 +44,10 @@ Gem::Specification.new do |s|
   s.add_dependency 'activerecord',  '~> 5.1.7'
   s.add_dependency 'activesupport', '~> 5.1.7'
 
-  s.add_dependency 'addressable',   '~> 2.4.0'
+  s.add_dependency 'addressable',   '~> 2.6.0'
   s.add_dependency 'httpi',         '~> 2.4.4'
-  s.add_dependency 'jeweler',       '~> 2.3.9'
 
+  s.add_development_dependency 'rake',          '~> 13.0.1'
   s.add_development_dependency 'RedCloth',      '~> 4.3.2'
   s.add_development_dependency 'rspec',         '~> 3.9.0'
   s.add_development_dependency 'rubocop',       '~> 0.82.0'
