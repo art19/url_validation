@@ -1,0 +1,4 @@
+--protected
+--no-private
+--exclude LICENSE
+lib/*_validator.rb

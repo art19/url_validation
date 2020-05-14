@@ -41,8 +41,8 @@ Gem::Specification.new do |s|
 
   s.specification_version = 4 if s.respond_to? :specification_version
 
-  s.add_dependency 'activerecord',  '~> 5.1.7'
-  s.add_dependency 'activesupport', '~> 5.1.7'
+  s.add_dependency 'activerecord',  '>= 5.1.7'
+  s.add_dependency 'activesupport', '>= 5.1.7'
 
   s.add_dependency 'addressable',   '~> 2.6.0'
   s.add_dependency 'httpi',         '~> 2.4.4'
