@@ -14,6 +14,10 @@ Metrics/BlockLength:
     - "*.gemspec"
     - "spec/**/*.rb"
 
+Metrics/ClassLength:
+  Exclude:
+    - "lib/url_validation.rb"
+
 Layout/LineLength:
   Max: 160 # 80*2 - you have a widescreen monitor, right?
 
@@ -21,6 +25,11 @@ Layout/LineLength:
 # of magnitude faster, easier to statically analyze and document, and arguably easier to grok.
 Metrics/ParameterLists:
   CountKeywordArgs: false
+
+# It's named this way because we had to rename the gem.
+Naming/FileName:
+  Exclude:
+    - "lib/art19-url_validation.rb"
 
 RSpec/NestedGroups:
   Max: 4

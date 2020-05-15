@@ -47,7 +47,8 @@ require 'active_support/core_ext/array/wrap'
 # h3. Networkless URL validation
 #
 # | @:scheme@ | A string or array of strings, such as "http" or "ftp", indicating which URL schemes are valid. By default only ==HTTP(S)== URLs are accepted. |
-# | @:default_scheme@ | A default URL scheme to try for improper URLs. If this is set to, e.g., "http", then when  a URL like "whoops.com" is given (which would otherwise fail due to an improper format), "http://whoops.com" will be tried instead. |
+# | @:default_scheme@ | A default URL scheme to try for improper URLs. If this is set to, e.g., "http", then when
+# a URL like "whoops.com" is given (which would otherwise fail due to an improper format), "http://whoops.com" will be tried instead. |
 #
 # h3. Over-the-network URL validation
 #
@@ -55,13 +56,19 @@ require 'active_support/core_ext/array/wrap'
 # you wish to use. This allows you to drop in, e.g., a Curl client if you want.
 # You can set the HTTPI adapter with the @:httpi_adapter@ option.
 #
-# | @:check_host@ | If @true@, the validator will perform a network test to verify that it can connect to the server and access the host (at the "/" path). This check will only be performed for ==HTTP(S)== URLs. |
-# | @:check_path@ | An integer or symbol (or array of integers or symbols), such as 301 or @:moved_permanently@, indicating what response codes are unacceptable. You can also use ranges, and include them in an array, such as @[ :moved_permanently, 400..404, 500..599 ]@. By default, this is @nil@, and therefore only host accessibility is checked. If @true@ is given, uses a default set of invalid error codes (4xx and 5xx). Implies @:check_host@ is also true. |
+# | @:check_host@ | If @true@, the validator will perform a network test to verify that it can connect to the server
+#   and access the host (at the "/" path). This check will only be performed for ==HTTP(S)== URLs. |
+# | @:check_path@ | An integer or symbol (or array of integers or symbols), such as 301 or @:moved_permanently@, indicating
+#   what response codes are unacceptable. You can also use ranges, and include them in an array, such as
+#   @[ :moved_permanently, 400..404, 500..599 ]@. By default, this is @nil@, and therefore only host accessibility is
+#   checked. If @true@ is given, uses a default set of invalid error codes (4xx and 5xx). Implies @:check_host@ is also true. |
 # | @:httpi_adapter@ | The HTTPI adapter to use for checking HTTP and HTTPS URLs (default set by the HTTPI gem). |
 #
 # h3. Other options
 #
-# | @:request_callback@ | A proc that receives the request object (for ==HTTP(S)== requests, the @HTTPI::Request@ object) before it is executed. You can use this proc to set, e.g., custom headers or timeouts on the request. |
+# | @:request_callback@ | A proc that receives the request object (for ==HTTP(S)== requests,
+# the @HTTPI::Request@ object) before it is executed. You can use this proc to set, e.g., custom headers or
+# timeouts on the request. |
 
 # Class that validates URLs
 class UrlValidator < ActiveModel::EachValidator
