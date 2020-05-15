@@ -17,8 +17,7 @@ before_install:
 before_script:
   - echo -e "build ruby version $TRAVIS_RUBY_VERSION"
   - if [ "$TRAVIS_RUBY_VERSION" = "2.6.2" ]; then export COVERAGE=true; fi
-  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-    > ~/cc-test-reporter && chmod +x ~/cc-test-reporter
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ~/cc-test-reporter && chmod +x ~/cc-test-reporter
   - if [ "x$COVERAGE" = "xtrue" ]; then ~/cc-test-reporter before-build; fi
 script: bundle exec rspec
 after_script:
