@@ -1,5 +1,11 @@
 h1. url_validation -- Simple URL validator for Rails 3
 
+"!https://api.codeclimate.com/v1/badges/eb70b3b135be129c5010/maintainability!":https://codeclimate.com/repos/5ebec9dd081d0d009c00414d/maintainability
+
+"!https://api.codeclimate.com/v1/badges/eb70b3b135be129c5010/test_coverage!":https://codeclimate.com/repos/5ebec9dd081d0d009c00414d/test_coverage
+
+!https://travis-ci.com/art19/url_validation.svg?branch=master!:https://travis-ci.com/art19/url_validation
+
 | *Author* | Tim Morgan |
 | *Version* | 1.0 (May 9, 2011) |
 | *License* | Released under the MIT license. |
