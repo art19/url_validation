@@ -8,3 +8,15 @@ cache:
 notifications:
   slack:
     secure: PMldiCSD2At8hh3/HwLg4rzczr9nPhAfcUO5msTm8/+1vOFvY8tEUqm7Ny84wv635X/Dhuk+YUd1MjfN72NG29N9RzJzEpWoQn2MHk83HflkhxPmr6kKOqeir1FnPb+X9pzJBatuz0PWd27QqEXjWIDdiGxs2udwtXpUGEKVLOfaqhYilbkDF96NCu3vZjdWBHAzP5x2lHEXs+meEkZ9P6iN89E//IpgAz6pbmA8oAgyW9UdIAWXEsjSmKGYja1dyPtYC/2Hu0P+1wB9qPZ9CsiA/r1ja7uRncOrst29My9K1aujY1BDIGCWHhcCddFu7ZYpDaDt26vQ4ZmNiFzh4/4nIswLlHyq5A4OKTxbFSVt0OG5BDLMKfl8nS+h28HeaS5VdOcu2aRI1TTkmeUSvVKejJ1IgWzROaACFy4YRD67r5d9l9yXMlU75yX90x+1UbF2nZC9ndsEDAjhiOWv59bUNJR0GnqEaUXO/OylBxUPJtdTRL4l10GFDZ1kV8eX/adIi12dwMyJwLFKLrjFX3dSvVgRwrGzhffoT67FvsTmlRoOEugkF6uP+o9y3ruKETaSx59/5yaXfKwEsXAaUAPOschjKQ+pKRYSDWCdBjWfVQU/9+zscQ3b1ihs1iyQwDIlbZdcolCknxkmn5MzzKqJXgGZDaLBaG5l2SGJ5M0=
+before_install:
+  - gem install bundler
+  - bundle --version
+before_script:
+  - echo -e "build ruby version $TRAVIS_RUBY_VERSION"
+  - if [ "$TRAVIS_RUBY_VERSION" = "2.6.2" ]; then export COVERAGE=true; fi
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+    > ~/cc-test-reporter && chmod +x ~/cc-test-reporter
+  - if [ "x$COVERAGE" = "xtrue" ]; then ~/cc-test-reporter before-build; fi
+script: bundle exec rspec
+after_script:
+  - if [ "x$COVERAGE" = "xtrue" ]; then ~/cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
