@@ -7,7 +7,7 @@ h1. url_validation -- Simple URL validator for Rails 3
 !https://travis-ci.com/art19/url_validation.svg?branch=master!:https://travis-ci.com/art19/url_validation
 
 | *Author* | Tim Morgan |
-| *Version* | 1.0 (May 9, 2011) |
+| *Version* | 1.1.2 (May 20, 2020) |
 | *License* | Released under the MIT license. |
 
 h2. About
