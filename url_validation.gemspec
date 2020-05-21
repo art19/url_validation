@@ -28,6 +28,7 @@ Gem::Specification.new do |s|
     README.textile
     Rakefile
     VERSION
+    lib/art19-url_validation.rb
     lib/url_validation.rb
     lib/url_validation/version.rb
     spec/spec_helper.rb
