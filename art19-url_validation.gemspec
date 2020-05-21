@@ -22,6 +22,7 @@ Gem::Specification.new do |s|
     .ruby-gemset
     .ruby-version
     .travis.yml
+    art19-url_validation.gemspec
     Gemfile
     Gemfile.lock
     LICENSE
@@ -33,7 +34,6 @@ Gem::Specification.new do |s|
     lib/url_validation/version.rb
     spec/spec_helper.rb
     spec/url_validator_spec.rb
-    url_validation.gemspec
   ]
   s.homepage = 'http://github.com/riscfuture/url_validation'
   s.required_ruby_version = Gem::Requirement.new('>= 2.6.2')
