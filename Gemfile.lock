@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    art19-url_validation (1.1.3)
+    art19-url_validation (1.1.4)
       activerecord (>= 5.2.4.2, < 6.0)
       activesupport (>= 5.2.4.2, < 6.0)
       addressable (~> 2.6.0)
